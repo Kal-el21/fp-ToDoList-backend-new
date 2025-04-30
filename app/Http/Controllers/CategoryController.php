@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     /**
@@ -21,7 +21,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('dashboard.categories.create');
 
     }
 
@@ -31,11 +31,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255|unique:categories,name'
         ]);
 
-        Category::create($request->only('name'));
-
+        Category::create(['name' => $request->name]);
         return redirect()->route('categories.index')->with('success', 'Category created.');
     }
 

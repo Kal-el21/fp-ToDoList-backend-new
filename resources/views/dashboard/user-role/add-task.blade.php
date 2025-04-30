@@ -25,7 +25,7 @@
 
                     {{-- Category (Multiple Select) --}}
                     <div class="input-group mb-3">
-                      <label class="input-group-text">Kategori</label>
+                      <label for="categories" class="input-group-text">Kategori</label>
                       <select class="form-select" name="categories[]" multiple>
                         @foreach($categories as $category)
                           <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -72,8 +72,15 @@
                       <input type="color" class="form-control form-control-color" name="color" value="#563d7c">
                     </div>
 
-                    {{-- Status (optional: hidden or select) --}}
-                    <input type="hidden" name="status" value="pending">
+                    {{-- Status --}}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="pending">Menunggu</option>
+                            <option value="in_progress">Sedang Dikerjakan</option>
+                            <option value="completed">Selesai</option>
+                        </select>
+                    </div>
 
                     {{-- Submit --}}
                     <div class="text-end">

@@ -37,18 +37,17 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'deadline' => 'required|date',
-            'reminder' => 'nullable|date',
+            'due_date' => 'required|date',
+            'reminder_at' => 'nullable|date',
             'color' => 'nullable|string',
             'priority' => 'nullable|in:low,medium,high',
             'ringtone_id' => 'nullable|exists:ringtones,id',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
-            'time_visualization' => 'nullable|string'
         ]);
 
         $task = Auth::user()->tasks()->create($request->only([
-            'title', 'description', 'deadline', 'reminder', 'color', 'priority', 'ringtone_id', 'time_visualization'
+            'title', 'description', 'due_date', 'reminder_at', 'color', 'priority', 'ringtone_id', 'status'
         ]));
 
         $task->categories()->sync($request->categories);
@@ -89,18 +88,17 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'deadline' => 'required|date',
-            'reminder' => 'nullable|date',
+            'due_date' => 'required|date',
+            'reminder_at' => 'nullable|date',
             'color' => 'nullable|string',
             'priority' => 'nullable|in:low,medium,high',
             'ringtone_id' => 'nullable|exists:ringtones,id',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
-            'time_visualization' => 'nullable|string'
         ]);
 
         $task->update($request->only([
-            'title', 'description', 'deadline', 'reminder', 'color', 'priority', 'ringtone_id', 'time_visualization'
+            'title', 'description', 'due_date', 'reminder_at', 'color', 'priority', 'ringtone_id', 'status'
         ]));
 
         $task->categories()->sync($request->categories);
@@ -113,7 +111,6 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
@@ -124,9 +121,15 @@ class TaskController extends Controller
      */
     public function markAsCompleted(Task $task)
     {
-        $this->authorize('update', $task);
-        $task->update(['completed' => true]);
+        // Cek apakah task milik user yang login
+        if ($task->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
 
-        return redirect()->route('tasks.index')->with('success', 'Task marked as completed.');
+        $task->status = 'completed';
+        $task->save();
+
+        return redirect()->route('tasks.index')->with('success', 'Task ditandai sebagai selesai.');
     }
+
 }
