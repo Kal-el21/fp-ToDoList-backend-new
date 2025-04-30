@@ -20,6 +20,12 @@ class Task extends Model
         'ringtone_id',
     ];
 
+    protected $casts = [ // Tetap berguna
+        'due_date' => 'datetime',
+        'reminder_at' => 'datetime',
+        'reminder_sent' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
