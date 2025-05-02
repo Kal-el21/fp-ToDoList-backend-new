@@ -22,13 +22,17 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => 'user', //default
         ]);
 
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
-            'token' => $user->createToken('auth_token')->plainTextToken,
+            'token' => $token,
             'user' => $user
-        ]);
+        ], 201);
     }
+
     public function login(Request $request)
     {
         $request->validate([

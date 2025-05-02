@@ -25,22 +25,39 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:categories,name', // Pastikan unik
-        ]);
+        try {
+            // Validasi
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255|unique:categories,name',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal.',
+                    'errors'  => $validator->errors()
+                ], 422);
+            }
+
+            // Simpan kategori dengan user_id
+            $category = Category::create([
+                'name' => $request->name,
+                // 'user_id' => auth()->id(), // isi dari user yang login
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kategori berhasil ditambahkan.',
+                'data'    => $category
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan kategori.',
+                'error'   => $e->getMessage()
+            ], 500);
         }
-
-        // ! 'created_by' akan diisi dari auth()->id() nanti
-        $category = Category::create([
-            'name' => $request->name,
-            // 'created_by' => auth()->id() // Contoh jika sudah ada auth
-        ]);
-
-        return response()->json(['success' => true, 'data' => $category], 201);
-
     }
 
     /**
@@ -54,16 +71,23 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        // $this->authorize('update', $category); // jika ada policy
+        $request->validate(['name' => 'required']);
+        $category->update(['name' => $request->name]);
+
+        return response()->json($category);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Category $category)
     {
-        //
+        $this->authorize('delete', $category); // jika ada policy
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted.']);
     }
 }
