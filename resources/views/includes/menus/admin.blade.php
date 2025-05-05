@@ -7,6 +7,17 @@
     </a>
   </li>
 
+  {{-- <li class="nav-title">User Management</li>
+
+  <li class="nav-item" {{ request()->routeIs('admin.users.index') ? 'active' : '' }}>
+    <a class="nav-link" href="{{ route('admin.users.index') }}">
+        <svg class="nav-icon">
+        <use xlink:href="{{ asset('coreUi/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
+        </svg> All Users
+    </a>
+  </li> --}}
+
+
   <li class="nav-title">Ringtone Management</li>
 
   <li class="nav-item" {{ request()->routeIs('ringtones.index') ? 'active' : '' }}>

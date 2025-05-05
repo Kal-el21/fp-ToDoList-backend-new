@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RingtoneController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 
 // =======================
 // AUTH & HOME ROUTES
@@ -29,11 +30,11 @@ Route::get('/home', [HomeController::class, 'index'])
 // =======================
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard.admin-role.index');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
 
     // Tambahkan route admin lain di sini jika ada
+    // Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
 });
 
 

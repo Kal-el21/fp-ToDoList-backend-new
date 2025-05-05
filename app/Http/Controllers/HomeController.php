@@ -25,10 +25,10 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::user()->role == 'admin') {
-            return view('dashboard.admin-role.index');
+            // Redirect ke route yang benar-benar sudah kirim data $users
+            return redirect()->route('admin.dashboard');
         } else {
-
-            return view('dashboard.user-role.index');
+            return redirect()->route('user.dashboard'); // route user juga perlu redirect
         }
 
     }
