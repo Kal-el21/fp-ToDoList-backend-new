@@ -44,7 +44,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
 Route::middleware(['auth', 'isUser'])->group(function () {
     Route::get('/user/dashboard', function () {
-        return view('dashboard.user-role.index');
+        return view('dashboard.user-role.tasks');
     })->name('user.dashboard');
 
     // Task routes
