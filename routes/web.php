@@ -48,7 +48,7 @@ Route::middleware(['auth', 'isUser'])->group(function () {
     })->name('user.dashboard');
 
     // Task routes
-    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/user/dashboard', [TaskController::class, 'index'])->name('user.dashboard');
     Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('/tasks/store', [TaskController::class, 'store'])->name('tasks.store');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
