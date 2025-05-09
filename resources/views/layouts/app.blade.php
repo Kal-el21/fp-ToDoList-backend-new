@@ -123,8 +123,6 @@
         </script>
         {{-- Chart --}}
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
+        @yield('script')
       </body>
     </html>

@@ -309,6 +309,9 @@
   </div>
 </div>
 
+@endsection
+@section('script')
+
 <script>
     const ctx = document.getElementById('taskChart').getContext('2d');
     const taskChart = new Chart(ctx, {
