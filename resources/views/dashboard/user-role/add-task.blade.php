@@ -35,13 +35,13 @@
 
                     {{-- Deadline / Due Date --}}
                     <div class="input-group mb-3">
-                      <label class="input-group-text">Deadline</label>
+                      <label class="input-group-text" for="due_date">Deadline</label>
                       <input type="datetime-local" class="form-control" name="due_date" required>
                     </div>
 
                     {{-- Reminder --}}
                     <div class="input-group mb-3">
-                      <label class="input-group-text">Pengingat</label>
+                      <label class="input-group-text" for="reminder_at">Pengingat</label>
                       <input type="datetime-local" class="form-control" name="reminder_at">
                     </div>
 

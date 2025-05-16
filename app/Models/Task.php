@@ -10,18 +10,20 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
-        'deadline',
-        'reminder',
-        'color',
-        'priority',
         'user_id',
         'ringtone_id',
+        'title',
+        'description',
+        'status',
+        'due_date',
+        'reminder_at',
+        'reminder_sent',
+        'color',
+        'priority',
     ];
 
     protected $casts = [ // Tetap berguna
-        'due_date' => 'datetime',
+        'due_date' => 'date',
         'reminder_at' => 'datetime',
         'reminder_sent' => 'boolean',
     ];

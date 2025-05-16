@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Ringtone;
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,11 +45,23 @@ class TaskController extends Controller
             'ringtone_id' => 'nullable|exists:ringtones,id',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'status' => 'required|in:pending,in_progress,completed', // ✅ Tambahkan ini
+
         ]);
 
-        $task = Auth::user()->tasks()->create($request->only([
-            'title', 'description', 'due_date', 'reminder_at', 'color', 'priority', 'ringtone_id', 'status'
-        ]));
+        // dd(Carbon::parse($request->reminder_at));
+
+        $task = Auth::user()->tasks()->create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $request->due_date ? Carbon::parse($request->due_date) : null,
+            'reminder_at' => $request->reminder_at ? Carbon::parse($request->reminder_at) : null,
+            'color' => $request->color,
+            'priority' => $request->priority,
+            'ringtone_id' => $request->ringtone_id,
+            'status' => $request->status ?? 'pending',
+        ]);
+
 
         $task->categories()->sync($request->categories);
 
@@ -75,7 +88,7 @@ class TaskController extends Controller
 
         $categories = Category::all();
         $ringtones = Ringtone::where('user_id', Auth::id())->orWhereNull('user_id')->get();
-        return view('tasks.edit', compact('task', 'categories', 'ringtones'));
+        return view('dashboard.user-role.edit-task', compact('task', 'categories', 'ringtones'));
     }
 
     /**
@@ -95,6 +108,8 @@ class TaskController extends Controller
             'ringtone_id' => 'nullable|exists:ringtones,id',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'status' => 'required|in:pending,in_progress,completed', // ✅ Tambahkan ini
+
         ]);
 
         $task->update($request->only([

@@ -84,6 +84,11 @@
                                     </button>
                                 </form>
 
+                                {{-- Tombol Edit --}}
+                                {{-- <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-outline-primary w-100 mt-2">
+                                    ✏️ Edit Task
+                                </a> --}}
+
                             </div>
                         </div>
                     </div>
